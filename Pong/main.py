@@ -41,14 +41,25 @@ SKIP = 20
 screen = Screen()
 screen.setup(width=600,height=600)
 screen.title("Pong")
-screen.tracer(0)
+#screen.tracer(0)
 game_line = Turtle()
 game_line.penup()
 game_line.goto(x=ORIGIN, y=-BORDER)
 game_line.color("gray")
 game_line.setheading(90)
 game_line.pendown()
-game_line.goto(x=ORIGIN, y=BORDER)
+
+for _ in range(0, BORDER):
+    if game_line.ycor() >= BORDER:
+        pass
+    else:
+        game_line.forward(SKIP)
+        game_line.penup()
+        game_line.forward(SKIP)
+        game_line.pendown()
+
+game_line.hideturtle()
 
 
+screen.update()
 screen.exitonclick()
