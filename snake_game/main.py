@@ -10,7 +10,7 @@ screen.bgcolor("black")
 screen.title("My Snake Game")
 screen.tracer(0)
 
-border_line = 290
+border_line = 270
 border = Turtle()
 border.color("green")
 border.penup()
@@ -24,6 +24,13 @@ border.goto(border_line, -border_line)
 border.penup()
 border.hideturtle()
 
+spacer = Turtle()
+spacer.color("red")
+spacer.penup()
+spacer.goto(0, 0)
+spacer.pendown()
+spacer.write("Press Space to start", False, align="Center", font=('Courier', 20, 'normal'))
+spacer.hideturtle()
 snake = Snake()
 food = Food()
 score = Score()
@@ -36,7 +43,8 @@ screen.onkey(snake.right, "Right")
 
 
 # animate the snake, so it moves across the screen
-def click_handler(x,y):
+def click_handler():
+    spacer.clear()
     game_is_on = True
     while game_is_on:
         screen.update()
@@ -50,17 +58,16 @@ def click_handler(x,y):
             score.refresh()
 
         # collision with wall
-        if snake.head.xcor() > 280 or snake.head.xcor() < -280 or snake.head.ycor() > 280 or snake.head.ycor() < -280:
-            game_is_on = False
-            score.game_over()
-
+        if snake.head.xcor() > 270 or snake.head.xcor() < -270 or snake.head.ycor() > 270 or snake.head.ycor() < -270:
+            score.reset_score()
+            snake.reset_snake()
         # Detect collision with tail
         for segment in snake.segments[1:]:
             if snake.head.distance(segment) < 10:
-                game_is_on = False
-                score.game_over()
+                score.reset_score()
+                snake.reset_snake()
 
 
 # screen.exitonclick()
-screen.onscreenclick(click_handler)
+screen.onkey(click_handler, "space")
 screen.mainloop()
