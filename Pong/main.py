@@ -1,56 +1,28 @@
-
-"""
-my thoughts
-Pong game:
-1. setup:
-    a. divide the screen
-    b. have two score
-    c. two bats that can slide only one around the line
-    d. ball bounces on the side wall but goes past behind the bat.
-
-2. when the ball touches side of the wall, it bounces
-3. when the ball touches bat, it bounces
-4. when the ball goes behind the bat the other player gets a score, a new ball is set.
-
-
-Classes:
-1. keep score for both players
-2. ball movement
-3. players movement
-
-Question when does the game end?
-can you pause the game?
-
-
-Angela Note:
-1. Create the screen
-2. Create and move paddle
-3. Create another paddle
-4. Create the ball and make it move
-5. Detect collision with wall and bounce
-6. Detect collision with paddle
-7. Detect when paddle misses
-8. Keep score
-
-"""
-
+# TODO: Increase ball speed when paddle hits the ball
 from turtle import Screen, Turtle
+from paddle import Paddle
+from ball import Ball
+from scoreboard import Scoreboard
+import time
+
 ORIGIN = 0
-BORDER = 280
+BORDER = 380
 SKIP = 20
 screen = Screen()
-screen.setup(width=600,height=600)
+screen.setup(width=800, height=600)
+screen.bgcolor("black")
 screen.title("Pong")
-#screen.tracer(0)
+screen.tracer(0)
 game_line = Turtle()
 game_line.penup()
 game_line.goto(x=ORIGIN, y=-BORDER)
 game_line.color("gray")
 game_line.setheading(90)
 game_line.pendown()
+scoreboard = Scoreboard()
 
 for _ in range(0, BORDER):
-    if game_line.ycor() >= BORDER:
+    if game_line.ycor() >= 280:
         pass
     else:
         game_line.forward(SKIP)
@@ -60,6 +32,40 @@ for _ in range(0, BORDER):
 
 game_line.hideturtle()
 
+# get paddle on:
+r_paddle = Paddle((350, 0))
+l_paddle = Paddle((-350, 0))
+ball = Ball()
 
-screen.update()
+screen.listen()
+# put paddle
+screen.onkey(r_paddle.go_up, "Up")
+screen.onkey(r_paddle.go_down, "Down")
+screen.onkey(l_paddle.go_up, "w")
+screen.onkey(l_paddle.go_down, "s")
+game_is_on = True
+
+while game_is_on:
+    # time.sleep(.1)
+    screen.update()
+    ball.move()
+
+    # Detect collision with wall
+    if ball.ycor() > 280 or ball.ycor() < -280:
+        ball.bounce_y()
+
+    # Detect collision with  paddle
+    if ball.distance(r_paddle) < 50 and ball.xcor() > 320 or ball.distance(l_paddle) < 50 and ball.xcor() < -320:
+        ball.bounce_x()
+
+    # detect when Right paddle misses the ball
+    if ball.xcor() > 380:
+        ball.reset_position()
+        scoreboard.l_point()
+
+    # detect when left paddle misses the ball
+    if ball.xcor() < -380:
+        ball.reset_position()
+        scoreboard.r_point()
+
 screen.exitonclick()
