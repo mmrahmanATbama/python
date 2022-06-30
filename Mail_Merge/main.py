@@ -7,7 +7,7 @@
 # Hint2: This method will also help you: https://www.w3schools.com/python/ref_string_replace.asp
 # Hint3: THis method will help you: https://www.w3schools.com/python/ref_string_strip.asp
 
-guests=[]
+guests = []
 
 with open("/Users/mmrha/PycharmProjects/Mail_Merge/Input/Names/invited_names.txt") as f:
     invited_guests = f.readlines()
@@ -20,8 +20,6 @@ replace_text = "[name]"
 
 with open("/Users/mmrha/PycharmProjects/Mail_Merge/Input/Letters/starting_letter.txt") as start:
     letter = start.read()
-
-
 
 for names in guests:
     updated_letter = letter.replace(replace_text, names)
