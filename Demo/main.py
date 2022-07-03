@@ -19,3 +19,4 @@ map[x_axis][y_axis] = 'x'
 
 # 🚨 Don't change the code below 👇
 print(f"{row1}\n{row2}\n{row3}")
+
